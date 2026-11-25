@@ -8,13 +8,18 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
-  const unreadNotifications = await prisma.notification.count({
-    where: {
-      organizationId: session.organizationId,
-      userId: session.userId,
-      isRead: false,
-    },
-  });
+  let unreadNotifications = 0;
+  try {
+    unreadNotifications = await prisma.notification.count({
+      where: {
+        organizationId: session.organizationId,
+        userId: session.userId,
+        isRead: false,
+      },
+    });
+  } catch {
+    unreadNotifications = 0;
+  }
 
   return NextResponse.json({
     user: session,
