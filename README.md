@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexora — Full-Stack Digital Agency Website & Multi-Tenant CRM Platform
 
-## Getting Started
+Nexora combines a **Webtec-faithful public digital agency website** with a complete, multi-tenant **CRM, CMS, Project Management, HR, Recruitment, and Finance** platform built on Next.js App Router, TypeScript, Tailwind CSS, Prisma ORM, and PostgreSQL.
 
-First, run the development server:
+---
+
+## Architecture & Modules
+
+- **Public Website (`src/app/(public)/*`)**:
+  - **Home (`/`)**: Faithful reproduction of the Webtec design system (navy-to-crimson hero, floating stats cards, About funnel & progress bar, dark rounded How It Work + 4-row Services showcase, Why Choose Us 2×2 grid, Selected Works portfolio grid, Our Team cards, interactive Testimonials slider, Partner Logos, CRM-connected Send Message form, Latest Blog cards, and dark rounded Newsletter Footer).
+  - **Inner Pages**: `/about`, `/services`, `/services/[slug]`, `/portfolio`, `/portfolio/[slug]`, `/team`, `/team/[slug]`, `/blog`, `/blog/[slug]`, `/contact`, `/faq`, `/careers`, `/privacy-policy`, `/terms-and-conditions`, plus dynamic `sitemap.xml` and `robots.txt`.
+  - **Light & Dark Themes**: Persisted across sessions without FOUC via `next-themes` and semantic CSS tokens in `src/app/globals.css`.
+- **Authentication & Multi-Tenant RBAC (`src/app/(auth)/*`, `src/lib/auth/*`, `src/lib/permissions/rbac.ts`)**:
+  - Signed HTTP-only JWT cookies (`jose`), bcrypt password hashing, password reset, email verification, rate limiting, and server-side `organizationId` isolation across 10 roles (`SUPER_ADMIN`, `ORG_ADMIN`, `SALES_MANAGER`, `SALES_REP`, `MARKETING`, `HR_MANAGER`, `FINANCE_MANAGER`, `PROJECT_MANAGER`, `EMPLOYEE`, `CLIENT`).
+- **Integrated Business Modules (`src/app/(dashboard)/*`, `src/app/api/*`)**:
+  - **CRM**: Executive KPI Dashboard (Recharts), Leads (search, filters, sort, pagination, bulk actions, CSV import/export, Lead Conversion to Contact + Company + Deal), Contacts, Companies, Drag-and-Drop Deals Kanban Pipeline, Activities, Tasks, Calendar & Meetings.
+  - **Operations & Finance**: Projects & Milestones, Employees (with public `/team` visibility toggle), HR Attendance/Leave/Work Logs, Recruitment & Public Resume Uploads, Invoices (with `jsPDF` invoice PDF export + payment tracking), Expenses, and Executive Reports.
+  - **CMS & Settings**: Manage Services, Portfolio, Blog Posts, Testimonials, FAQs, Media Library, Contact Inbox, Organization Profile, RBAC Role Assignments, and Audit Logs.
+
+---
+
+## Quick Start
+
+### 1. Configure Environment Variables
+
+Copy `.env.example` to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Update `DATABASE_URL` to point to your PostgreSQL instance and set a strong `AUTH_SECRET` (32+ characters).
+
+### 2. Start PostgreSQL (Optional Docker)
+
+```bash
+docker compose up -d
+```
+
+### 3. Run Prisma Migrations & Seed Demo Data
+
+```bash
+npm install
+npx prisma generate
+npx prisma migrate dev --name init
+npm run db:seed
+```
+
+### 4. Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Seeded Demo Accounts (Password: `Nexora@2026!`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Role | Email |
+| :--- | :--- |
+| Super Admin | `admin@nexora.agency` |
+| Sales Manager | `sales@nexora.agency` |
+| HR Manager | `hr@nexora.agency` |
+| Finance Manager | `finance@nexora.agency` |
+| Project Manager | `pm@nexora.agency` |
+| Marketing | `marketing@nexora.agency` |
+| Client | `client@brightlabs.io` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Testing & Verification
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npx tsc --noEmit     # TypeScript check
+npm run lint         # ESLint check
+npm test             # Vitest unit & integration tests
+npm run build        # Production Next.js build
+npm run test:e2e     # Playwright end-to-end tests (requires running app)
+```

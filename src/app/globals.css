@@ -1,26 +1,210 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* === Core App & Dashboard Light Theme === */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #eff6ff;
+  --accent-foreground: #1d4ed8;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: #3b82f6;
+  --radius: 0.75rem;
+
+  /* === Webtec Public Website Design Lock Tokens (Light) === */
+  --webtec-accent: #ff3838;
+  --webtec-accent-hover: #e02828;
+  --webtec-navy: #120f26;
+  --webtec-navy-2: #181332;
+  --webtec-dark: #222222;
+  --webtec-footer: #141414;
+  --webtec-surface: #ffffff;
+  --webtec-surface-alt: #f8f5f0;
+  --webtec-surface-silver: #f5f5f5;
+  --webtec-surface-rose: #fff5f5;
+  --webtec-heading: #24201f;
+  --webtec-body: #6d6c74;
+  --webtec-border: #e8e6e3;
+  --webtec-review: #ffaa18;
+}
+
+.dark {
+  /* === Nexora CRM / Dashboard Dark Theme (Midnight Navy Glass) === */
+  --background: #060918;
+  --foreground: #f1f5f9;
+  --card: #0c1328;
+  --card-foreground: #f1f5f9;
+  --popover: #0e1630;
+  --popover-foreground: #f1f5f9;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #131d3b;
+  --secondary-foreground: #e2e8f0;
+  --muted: #111a36;
+  --muted-foreground: #94a3b8;
+  --accent: #172554;
+  --accent-foreground: #93c5fd;
+  --destructive: #f87171;
+  --destructive-foreground: #ffffff;
+  --border: rgba(99, 130, 246, 0.18);
+  --input: rgba(148, 163, 184, 0.22);
+  --ring: #60a5fa;
+
+  /* === Webtec Public Website Dark Mode Tokens (Preserving Reference Identity) === */
+  --webtec-accent: #ff3838;
+  --webtec-accent-hover: #ff5252;
+  --webtec-navy: #0c0a1d;
+  --webtec-navy-2: #120f28;
+  --webtec-dark: #16161f;
+  --webtec-footer: #0b0b12;
+  --webtec-surface: #0e0e16;
+  --webtec-surface-alt: #161521;
+  --webtec-surface-silver: #1a1927;
+  --webtec-surface-rose: #25151c;
+  --webtec-heading: #f8fafc;
+  --webtec-body: #b0b3c5;
+  --webtec-border: rgba(255, 255, 255, 0.1);
+  --webtec-review: #ffaa18;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: "Mulish", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Kumbh Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-accent: "Rubik", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Webtec Reference Typography & Components */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+.webtec-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  height: 54px;
+  padding: 6px 26px 6px 6px;
+  border-radius: 9999px;
+  background-color: var(--webtec-accent);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 10px 24px -8px rgba(255, 56, 56, 0.45);
+}
+
+.webtec-btn-primary:hover {
+  background-color: var(--webtec-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -8px rgba(255, 56, 56, 0.55);
+}
+
+.webtec-btn-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  color: var(--webtec-accent);
+  transition: transform 0.28s ease;
+  flex-shrink: 0;
+}
+
+.webtec-btn-primary:hover .webtec-btn-circle {
+  transform: translateX(3px);
+}
+
+.webtec-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 54px;
+  padding: 6px 24px 6px 6px;
+  border-radius: 9999px;
+  border: 1px solid var(--webtec-heading);
+  color: var(--webtec-heading);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.webtec-btn-outline:hover {
+  background-color: var(--webtec-accent);
+  border-color: var(--webtec-accent);
+  color: #ffffff;
+}
+
+/* Dashboard Glass Card (Dark Mode Fidelity to Nexora UI Reference) */
+.nexora-glass-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.06);
+}
+
+.dark .nexora-glass-card {
+  background: linear-gradient(145deg, rgba(16, 25, 54, 0.9), rgba(10, 16, 36, 0.92));
+  border: 1px solid rgba(99, 130, 246, 0.18);
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
