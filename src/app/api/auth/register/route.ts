@@ -167,9 +167,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Graceful offline fallback: Create active session for the new workspace
+    // Graceful offline fallback: Create active session for the new user as EMPLOYEE
     const fallbackUserId = `user-${crypto.randomBytes(4).toString("hex")}`;
     const fallbackOrgId = `org-${crypto.randomBytes(4).toString("hex")}`;
+    const userRole: RoleCode = "EMPLOYEE";
+
+    // Register user in persistent agency store
+    const { agencyStore } = await import("@/lib/db/agency-store");
+    agencyStore.registerNewUser(name, normalizedEmail, userRole);
 
     await setSessionCookie({
       userId: fallbackUserId,
@@ -178,8 +183,8 @@ export async function POST(req: NextRequest) {
       organizationId: fallbackOrgId,
       organizationName: orgLabel,
       organizationSlug: uniqueSlug,
-      role: "ORG_ADMIN",
-      permissions: ROLE_DEFAULT_PERMISSIONS.ORG_ADMIN ?? ALL_PERMISSIONS,
+      role: userRole,
+      permissions: ROLE_DEFAULT_PERMISSIONS[userRole] ?? [],
     });
 
     return NextResponse.json(
@@ -189,6 +194,7 @@ export async function POST(req: NextRequest) {
           id: fallbackUserId,
           name: name.trim(),
           email: normalizedEmail,
+          role: userRole,
           organizationName: orgLabel,
         },
       },

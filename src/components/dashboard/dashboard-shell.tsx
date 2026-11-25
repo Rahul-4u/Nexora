@@ -20,6 +20,7 @@ import {
   FolderKanban,
   Globe,
   Handshake,
+  Home,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -329,12 +330,12 @@ export function DashboardShell({
 
             <Link
               href="/"
-              target="_blank"
-              title="Open Public Website"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground"
+              title="Return to Public Website Home"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground shadow-xs cursor-pointer"
             >
-              <span>Website</span>
-              <ExternalLink className="h-3 w-3" />
+              <Home className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Go to Home</span>
+              <span className="sm:hidden">Home</span>
             </Link>
 
             <Link
@@ -408,6 +409,17 @@ export function DashboardShell({
             </div>
 
             <nav className="space-y-1" aria-label="Dashboard sidebar">
+              <Link
+                href="/"
+                title={collapsed ? "Public Website Home" : undefined}
+                className={cn(
+                  "mb-2 flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/10 px-3 py-2 text-xs font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground",
+                  collapsed && "justify-center px-2"
+                )}
+              >
+                <Home className="h-4 w-4 shrink-0" />
+                {!collapsed && <span>Website Home</span>}
+              </Link>
               {allowedItems.map((item) => {
                 const active =
                   item.href === "/dashboard"
@@ -460,6 +472,14 @@ export function DashboardShell({
                 </button>
               </div>
               <nav className="mt-4 flex-1 space-y-1 overflow-y-auto">
+                <Link
+                  href="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mb-2 flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/10 px-3 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground"
+                >
+                  <Home className="h-4 w-4 shrink-0" />
+                  <span>Go to Website Home</span>
+                </Link>
                 {allowedItems.map((item) => {
                   const active =
                     item.href === "/dashboard"

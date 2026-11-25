@@ -75,6 +75,10 @@ export const projectSchema = z.object({
   deadline: z.string().optional().nullable(),
   companyId: z.string().optional().nullable(),
   contactId: z.string().optional().nullable(),
+  teamName: z.string().optional().nullable(),
+  teamLeader: z.string().optional().nullable(),
+  companyName: z.string().optional().nullable(),
+  milestones: z.array(z.string()).optional(),
 });
 
 export const employeeSchema = z.object({
